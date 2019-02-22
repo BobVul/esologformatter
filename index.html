@@ -80,12 +80,12 @@ limitations under the License.
       <input id="drp" type="text" class="form-control match-content" style="display: none;">
       <label for="timeformat">Time Format</label>
       <select id="timeformat" class="form-control match-content" onchange="timeFormatChange()">
-        <option value="friendly">US: [02/17/19 03:38pm UTC-5]</option>
-        <option value="friendlynotz">US without Timezone: [02/17/19 03:38pm]</option>
-        <option value="minfriendly">Minimal US: 2/17/19 3:38pm</option>
-        <option value="orig">Raw: 2019-02-17T15:38:15.052-05:00</option>
-        <option value="european">European (DD/MM/YY): 17/2/19 15:38 UTC-5</option>
-        <option value="none">None</option>
+        <option value="LL/dd/yy hh:mm:ssa ZZZZ">US: [02/17/19 03:38pm UTC-5]</option>
+        <option value="LL/dd/yy hh:mm:ssa">US without Timezone: [02/17/19 03:38pm]</option>
+        <option value="L/d/yy h:mm:ssa">Minimal US: 2/17/19 3:38pm</option>
+        <option value="**original**">Raw: 2019-02-17T15:38:15.052-05:00</option>
+        <option value="dd/LL/yy HH:mm:ss ZZZZ">European (DD/MM/YY): 17/2/19 15:38 UTC-5</option>
+        <option value="**blank**">None</option>
       </select>
       <label for="outputformat">Output Format</label>
       <select id="outputformat" class="form-control match-content" onchange="outputFormatChange()">

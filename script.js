@@ -21,6 +21,9 @@ var channels = {};
 var prod = true;
 const linerx = new RegExp(/^((\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})-(\d{2}):(\d{2})) (\d{1,2}),([^,]+),(.*)$/, "gmi");
 
+const arrayChunkSize = 1000;
+const arrayRounds = 5;
+
 //As of API 100025 (Murkmire/v4.2)
 const minChannel = 0;
 const maxChannel = 35;
@@ -185,7 +188,7 @@ async function renderResultListThread(resultList, channelNum, howMany = null, pr
     channelNum,
     howMany
   );
-  return renderResultList(theList, channelNum, prefix);
+  return await renderResultList(theList, channelNum, prefix);
 }
 
 function calculateResultList(channelChecks, dateCheck, startDate, endDate, resultList, channelNum, howMany = null) {
@@ -208,99 +211,141 @@ function calculateResultList(channelChecks, dateCheck, startDate, endDate, resul
   return retval;
 }
 
-function renderResultList(resultList, channelNum, prefix = "example") {
-  const getTimeHeader = () => {
-    if(document.getElementById("timeformat").value == "none") {
-      return "";
-    }
-    return "<td>Time</td>";
-  };
-  const getTimeValue = (origTimeString) => {
-    if(document.getElementById("timeformat").value == "none") {
-      return "";
-    }
-    if(document.getElementById("timeformat").value == "friendly") {
-      return luxon.DateTime.fromISO(origTimeString, {setZone: true}).toFormat("LL/dd/yy hh:mm:ssa ZZZZ");
-    }
-    else if(document.getElementById("timeformat").value == "friendlynotz") {
-      return luxon.DateTime.fromISO(origTimeString, {setZone: true}).toFormat("LL/dd/yy hh:mm:ssa");
-    }
-    else if(document.getElementById("timeformat").value == "minfriendly") {
-      return luxon.DateTime.fromISO(origTimeString, {setZone: true}).toFormat("L/d/yy h:mm:ssa");
-    }
-    else if(document.getElementById("timeformat").value == "european") {
-      return luxon.DateTime.fromISO(origTimeString, {setZone: true}).toFormat("dd/LL/yy HH:mm:ss ZZZZ");
-    }
-    return origTimeString; 
-  };
-  const getTimeCell = (origTimeString) => {
-    if(document.getElementById("timeformat").value == "none") {
-      return "";
-    }
-    return `<td>${getTimeValue(origTimeString)}</td>`;
-  }
-
-  if(channelNum == null) channelNum = "";
-  let retval = document.createElement("div");
-  retval.style = "word-wrap: break-word;";
+async function renderResultList(resultList, channelNum, prefix = "example") {
+  let timeFormat = document.getElementById("timeformat").value;
   
-  if(document.getElementById("outputformat").value == "table") {
-    retval.innerHTML = `
-      <table id="${prefix}TextTable${channelNum}" class="table table-bordered table-sm">
-        <thead class='thead-light'>
-          <tr>
-            ${getTimeHeader()}
-            <td>Channel</td>
-            <td>From</td>
-            <td>Message</td>
-          </tr>
-        </thead>
-        <tbody id='${prefix}TextTbody${channelNum}'>
-        </tbody>
-      </table>
-    `.trim();
-    let tbody = retval.querySelector(`#${prefix}TextTbody${channelNum}`);
-    for(let i = 0; i < resultList.length; i++) {
-      let row = document.createElement("tr");
-      row.innerHTML = `
-        ${getTimeCell(resultList[i][1])}
-        <td>${chatChannelLabels[resultList[i][11]]}</td>
-        <td>${resultList[i][12]}</td>
-        <td style="word-wrap: break-word;">${resultList[i][13]}</td>
-      `.trim();
-      tbody.appendChild(row);
-    }
-  }
-  else {
-    let tc = "";
-    for(let i = 0; i < resultList.length; i++) {
-      let tv = getTimeValue(resultList[i][1]);
-      if(tv != null && tv != "") tc += "[" + tv + "] ";
-      let cc = chatChannels[resultList[i][11]];
-      if(cc == "Say") {
-        tc += resultList[i][12] + ": ";
+  return new Promise((resolve, reject) => {
+    let worker = new Worker("renderWorker.js");
+
+    let data = [];
+
+    let currentI = 0;
+    let continueFn = function() {
+      console.log(`${currentI} of ${resultList.length}`);
+      if (currentI >= resultList.length + arrayChunkSize) {
+        worker.postMessage({
+          command: 'stop'
+        });
+        return;
       }
-      else if(cc == "Emote") {
-        tc += resultList[i][12] + " ";
+
+      worker.postMessage({
+        command: 'clear'
+      });
+
+      for (let i = 0; i < arrayRounds; i++) {
+        worker.postMessage({
+          command: 'append',
+          list: JSON.stringify(resultList.slice(currentI, currentI + arrayChunkSize))
+        });
+        currentI += arrayChunkSize;
+        
+        if (currentI >= resultList.length + arrayChunkSize) {
+          break;
+        }
       }
-      else if(cc == "Yell") {
-        tc += resultList[i][12] + " yells ";
+      
+      worker.postMessage({
+        command: 'render',
+        channel: channelNum,
+        prefix: prefix,
+        timeFormat: timeFormat
+      });
+    };
+
+    worker.addEventListener('message', event => {
+      switch (event.data.command) {
+        case 'continue':
+          continueFn();
+          break;
+        case 'append':
+          data = data.concat(JSON.parse(event.data.list));
+          break;
+        case 'end':
+
+        
+          const getTimeHeader = () => {
+            if(document.getElementById("timeformat").value == "none") {
+              return "";
+            }
+            return "<td>Time</td>";
+          };
+          const getTimeCell = (origTimeString) => {
+            if(document.getElementById("timeformat").value == "none") {
+              return "";
+            }
+            return `<td>${origTimeString}</td>`;
+          }
+        
+          if(channelNum == null) channelNum = "";
+          let retval = document.createElement("div");
+          retval.style = "word-wrap: break-word;";
+          
+          if(document.getElementById("outputformat").value == "table") {
+            retval.innerHTML = `
+              <table id="${prefix}TextTable${channelNum}" class="table table-bordered table-sm">
+                <thead class='thead-light'>
+                  <tr>
+                    ${getTimeHeader()}
+                    <td>Channel</td>
+                    <td>From</td>
+                    <td>Message</td>
+                  </tr>
+                </thead>
+                <tbody id='${prefix}TextTbody${channelNum}'>
+                </tbody>
+              </table>
+            `.trim();
+            let tbody = retval.querySelector(`#${prefix}TextTbody${channelNum}`);
+            for(let i = 0; i < resultList.length; i++) {
+              let row = document.createElement("tr");
+              row.innerHTML = `
+                ${getTimeCell(data[i].formattedTime)}
+                <td>${chatChannelLabels[resultList[i][11]]}</td>
+                <td>${resultList[i][12]}</td>
+                <td style="word-wrap: break-word;">${resultList[i][13]}</td>
+              `.trim();
+              tbody.appendChild(row);
+            }
+          }
+          else {
+            let tc = "";
+            for(let i = 0; i < resultList.length; i++) {
+              let tv = getTimeValue(resultList[i][1]);
+              if(tv != null && tv != "") tc += "[" + tv + "] ";
+              let cc = chatChannels[resultList[i][11]];
+              if(cc == "Say") {
+                tc += resultList[i][12] + ": ";
+              }
+              else if(cc == "Emote") {
+                tc += resultList[i][12] + " ";
+              }
+              else if(cc == "Yell") {
+                tc += resultList[i][12] + " yells ";
+              }
+              else if(cc == "Whisper") {
+                tc += resultList[i][12] + ": "
+              }
+              else if(cc == "Outgoing Whisper") {
+                tc += "-> " + resultList[i][12] + ": "
+              }
+              else {
+                tc += "[" + chatChannelLabels[resultList[i][11]] + "] " + resultList[i][12] + ": ";
+              }
+              tc += resultList[i][13];
+              tc += "<br>";
+            }
+            retval.innerHTML = tc;
+          }
+          resolve(retval);
+
+
+          break;
       }
-      else if(cc == "Whisper") {
-        tc += resultList[i][12] + ": "
-      }
-      else if(cc == "Outgoing Whisper") {
-        tc += "-> " + resultList[i][12] + ": "
-      }
-      else {
-        tc += "[" + chatChannelLabels[resultList[i][11]] + "] " + resultList[i][12] + ": ";
-      }
-      tc += resultList[i][13];
-      tc += "<br>";
-    }
-    retval.innerHTML = tc;
-  }
-  return retval;
+    });
+
+    continueFn();
+  });
 }
 
 async function getTableRow(channelNum, resultList) {
