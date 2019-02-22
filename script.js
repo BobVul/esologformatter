@@ -399,7 +399,7 @@ async function runStepTwo() {
       if(!channels[n11]) {
         channels[n11] = [];
       }
-      result.push(moment(result[1]).valueOf());
+      result.push(new Date(result[1]).valueOf());
       channels[n11].push(result);
       allLines.push(result);
     }
