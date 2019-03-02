@@ -23,7 +23,9 @@ namespace EsoLogFormatter.Models
 
             return new LogEntry
             {
-                TimeStamp = DateTimeOffset.ParseExact(match.Groups["timestamp"].Value, "K", CultureInfo.InvariantCulture),
+                // the "O" format expects 7 digits of partial seconds
+                // exact parsing should be faster than having to guess the value?
+                TimeStamp = DateTimeOffset.ParseExact(match.Groups["timestamp"].Value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffzzz", CultureInfo.InvariantCulture),
                 Channel = Int32.Parse(match.Groups["channel"].Value),
                 Text = match.Groups["text"].Value
             };
