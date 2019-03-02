@@ -16,8 +16,15 @@ namespace EsoLogFormatter.ViewModels
         {
             BrowseCommand = new RelayCommand(() =>
             {
-                var dialog = new OpenFileDialog();
-                dialog.ShowDialog();
+                var dialog = new OpenFileDialog
+                {
+                    FileName = this.FileName
+                };
+
+                if (dialog.ShowDialog().GetValueOrDefault(false))
+                {
+                    this.FileName = dialog.FileName;
+                }
             });
         }
     }
