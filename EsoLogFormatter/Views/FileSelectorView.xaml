@@ -9,6 +9,6 @@
     <DockPanel Margin="5">
         <Button Content="Browse" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="5,2,5,2"  Command="{Binding BrowseCommand}"/>
 
-        <TextBox />
+        <TextBox Text="{Binding FileName}" />
     </DockPanel>
 </UserControl>
