@@ -19,8 +19,7 @@
         </Border>
 
         <Button Content="Process" DockPanel.Dock="Bottom"/>
-        
-        <Label Content="Stuff goes here" HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontSize="40"/>
+
+        <local:LogTableView DataContext="{Binding LogTable}" />
     </DockPanel>
 </UserControl>

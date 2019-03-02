@@ -7,7 +7,7 @@ namespace EsoLogFormatter.Models
 {
     class Log
     {
-        List<LogEntry> Entries;
+        public List<LogEntry> Entries { get; set; }
 
         public Log()
         {
