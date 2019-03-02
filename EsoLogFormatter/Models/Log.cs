@@ -7,13 +7,23 @@ namespace EsoLogFormatter.Models
 {
     class Log
     {
+        List<LogEntry> Entries;
 
-
-        public Log() { }
-
-        public Log(string filePath)
+        public Log()
         {
-            string[] lines = File.ReadAllLines(filePath);
+            Entries = new List<LogEntry>();
+        }
+
+        public static Log FromFile(string filePath)
+        {
+            var log = new Log();
+
+            foreach (var line in File.ReadLines(filePath))
+            {
+                log.Entries.Add(LogEntry.FromLogRow(line));
+            }
+
+            return log;
         }
     }
 }

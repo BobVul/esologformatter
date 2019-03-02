@@ -1,13 +1,16 @@
 ﻿using EsoLogFormatter.Helpers;
 using EsoLogFormatter.Models;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
 namespace EsoLogFormatter.ViewModels
 {
+    [AddINotifyPropertyChangedInterface]
     class HomeViewModel
     {
         public FileSelectorViewModel FileSelector { get; set; }
@@ -23,7 +26,7 @@ namespace EsoLogFormatter.ViewModels
             {
                 try
                 {
-                    CurrentLog = new Log(FileSelector.FileName);
+                    CurrentLog = Log.FromFile(FileSelector.FileName);
                 }
                 catch (Exception ex)
                 {
