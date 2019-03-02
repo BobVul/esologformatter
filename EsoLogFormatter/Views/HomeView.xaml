@@ -9,7 +9,7 @@
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <DockPanel>
-                <Button Content="Import" DockPanel.Dock="Bottom" Margin="5" />
+                <Button Content="Import" DockPanel.Dock="Bottom" Margin="5" Command="{Binding ImportCommand}"/>
             
                 <DockPanel>
                     <Label Content="Select file: " DockPanel.Dock="Left" VerticalAlignment="Center" />
