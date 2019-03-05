@@ -15,6 +15,7 @@ namespace EsoLogFormatter.ViewModels
     {
         public FileSelectorViewModel FileSelector { get; set; }
         public LogTableViewModel LogTable { get; set; }
+        public ConfigViewModel Config { get; set; }
 
         public Log CurrentLog { get; set; }
 
@@ -24,6 +25,7 @@ namespace EsoLogFormatter.ViewModels
         {
             FileSelector = new FileSelectorViewModel();
             LogTable = new LogTableViewModel();
+            Config = new ConfigViewModel();
 
             ImportCommand = new RelayCommand(() =>
             {
