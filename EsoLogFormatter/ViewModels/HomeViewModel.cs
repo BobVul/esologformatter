@@ -37,10 +37,9 @@ namespace EsoLogFormatter.ViewModels
                 {
                     MessageBox.Show(ex.ToString(), "Log parse error");
                 }
-                var foo = new LogTableViewModel();
-                foo.CurrentLog = CurrentLog;
-                LogTable = foo;
-                // LogTable.CurrentLog = CurrentLog;
+                LogTable.CurrentLog = CurrentLog;
+                Config.ExampleSource = CurrentLog;
+                Config.ImportLog(CurrentLog);
             });
         }
     }

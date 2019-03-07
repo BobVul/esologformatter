@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\ConfigView.xaml" />
     <None Remove="Views\FileSelectorView.xaml" />
     <None Remove="Views\HomeView.xaml" />
     <None Remove="Views\LogTableView.xaml" />
@@ -17,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ConfigView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\FileSelectorView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -29,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\ConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\FileSelectorView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

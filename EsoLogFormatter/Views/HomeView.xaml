@@ -20,6 +20,7 @@
 
         <Button Content="Process" DockPanel.Dock="Bottom"/>
 
-        <local:LogTableView DataContext="{Binding LogTable}" />
+        <local:ConfigView DataContext="{Binding Config}" />
+        <!--<local:LogTableView DataContext="{Binding LogTable.CurrentLog.Entries}" />-->
     </DockPanel>
 </UserControl>

@@ -7,6 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
-        <local:ColumnConfigView />
+        <StackPanel.Resources>
+            <DataTemplate x:Key="ExampleTemplate">
+                <local:LogTableView DataContext="{Binding Examples}" />
+            </DataTemplate>
+        </StackPanel.Resources>
+        <DataGrid DataContext="{Binding Channels}" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Channel Index" Binding="{Binding Index}" />
+                <DataGridTextColumn Header="Channel Alias" Binding="{Binding Alias}" />
+                <DataGridTextColumn Header="Channel Type" Binding="{Binding Type}" />
+                <DataGridTemplateColumn Header="Example" CellTemplate="{StaticResource ExampleTemplate}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </UserControl>
