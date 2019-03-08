@@ -11,6 +11,8 @@ namespace EsoLogFormatter.ViewModels
     {
         public Log CurrentLog { get; set; }
 
+        public Config Config { get; set; }
+
         public LogTableViewModel()
         {
             CurrentLog = new Log();

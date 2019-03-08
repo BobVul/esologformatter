@@ -14,6 +14,13 @@ namespace EsoLogFormatter.ViewModels
 
         [DependsOn("Config")]
         [AlsoNotifyFor("Config")]
+        public bool Enabled
+        {
+            get => Config.Enabled;
+            set => Config.Enabled = value;
+        }
+        [DependsOn("Config")]
+        [AlsoNotifyFor("Config")]
         public int Index
         {
             get => Config.Index;
@@ -36,7 +43,13 @@ namespace EsoLogFormatter.ViewModels
 
         public Log ExampleSource { get; set; }
         [DependsOn("ExampleSource", "Config")]
-        public IEnumerable<LogEntry> Examples => ExampleSource.Entries.Where(e => e.Channel == Index).Take(5);
+        public IEnumerable<object> Examples => ExampleSource.Entries.Where(e => e.Channel == Index).Take(5).Select(l => new
+        {
+            l.TimeStamp,
+            Channel = Alias,
+            l.Author,
+            l.Text
+        });
 
         private ChannelConfigViewModel() { }
 

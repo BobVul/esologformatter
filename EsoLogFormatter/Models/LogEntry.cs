@@ -12,11 +12,13 @@ namespace EsoLogFormatter.Models
 
         public int Channel { get; private set; }
 
+        public string Author { get; private set; }
+
         public string Text { get; private set; }
 
         private LogEntry() { }
 
-        private static readonly Regex logRegex = new Regex(@"^(?<timestamp>[^ ]+) (?<channel>\d+),(?<text>.*)$", RegexOptions.Compiled);
+        private static readonly Regex logRegex = new Regex(@"^(?<timestamp>[^ ]+) (?<channel>\d+),(?<author>[^,]+),(?<text>.*)$", RegexOptions.Compiled);
         public static LogEntry FromLogRow(string row)
         {
             var match = logRegex.Match(row);
@@ -27,6 +29,7 @@ namespace EsoLogFormatter.Models
                 // exact parsing should be faster than having to guess the format?
                 TimeStamp = DateTimeOffset.ParseExact(match.Groups["timestamp"].Value, "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffzzz", CultureInfo.InvariantCulture),
                 Channel = Int32.Parse(match.Groups["channel"].Value),
+                Author = match.Groups["author"].Value,
                 Text = match.Groups["text"].Value
             };
         }
