@@ -45,7 +45,8 @@ namespace EsoLogFormatter.ViewModels
 
             ShowTableCommand = new RelayCommand(() =>
             {
-
+                Window w = new LogViewerWindow();
+                w.Show();
             });
         }
     }
