@@ -11,12 +11,6 @@
     <Window.DataContext>
         <ViewModels:HomeViewModel />
     </Window.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Views:HomeView />
-        <Button Content="Exit" Grid.Row="1" FontSize="20" Click="ButtonExit_Click"/>
-    </Grid>
+    
+    <Views:HomeView />
 </Window>

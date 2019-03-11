@@ -9,7 +9,7 @@
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,1">
             <DockPanel>
-                <Button Content="Import" DockPanel.Dock="Bottom" Margin="5" Command="{Binding ImportCommand}"/>
+                <Button Content="Import" DockPanel.Dock="Bottom" FontSize="20" Margin="5" Command="{Binding ImportCommand}"/>
             
                 <DockPanel>
                     <Label Content="Select file: " DockPanel.Dock="Left" VerticalAlignment="Center" />
@@ -18,7 +18,7 @@
             </DockPanel>
         </Border>
 
-        <Button Content="Process" DockPanel.Dock="Bottom"/>
+        <Button Content="Show Table" DockPanel.Dock="Bottom" FontSize="20" Command="{Binding ShowTableCommand}"/>
 
         <local:ConfigView DataContext="{Binding Config}" />
         <!--<local:LogTableView DataContext="{Binding LogTable.CurrentLog.Entries}" />-->

@@ -20,6 +20,7 @@ namespace EsoLogFormatter.ViewModels
         public Log CurrentLog { get; set; }
 
         public ICommand ImportCommand { get; set; }
+        public ICommand ShowTableCommand { get; set; }
 
         public HomeViewModel()
         {
@@ -40,6 +41,11 @@ namespace EsoLogFormatter.ViewModels
                 LogTable.CurrentLog = CurrentLog;
                 Config.ExampleSource = CurrentLog;
                 Config.ImportLog(CurrentLog);
+            });
+
+            ShowTableCommand = new RelayCommand(() =>
+            {
+
             });
         }
     }
