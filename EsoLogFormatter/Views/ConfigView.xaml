@@ -11,7 +11,7 @@
         <StackPanel>
             <StackPanel.Resources>
                 <DataTemplate x:Key="ExampleTemplate">
-                    <local:LogTableView DataContext="{Binding Examples}" />
+                    <local:LogTableView DataContext="{Binding ExampleLogTable}" />
                 </DataTemplate>
             </StackPanel.Resources>
             <DataGrid DataContext="{Binding Channels}" ItemsSource="{Binding}" AutoGenerateColumns="False">

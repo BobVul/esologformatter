@@ -14,7 +14,6 @@ namespace EsoLogFormatter.ViewModels
     class HomeViewModel
     {
         public FileSelectorViewModel FileSelector { get; set; }
-        public LogTableViewModel LogTable { get; set; }
         public ConfigViewModel Config { get; set; }
 
         public Log CurrentLog { get; set; }
@@ -25,7 +24,6 @@ namespace EsoLogFormatter.ViewModels
         public HomeViewModel()
         {
             FileSelector = new FileSelectorViewModel();
-            LogTable = new LogTableViewModel();
             Config = new ConfigViewModel();
 
             ImportCommand = new RelayCommand(() =>
@@ -38,15 +36,22 @@ namespace EsoLogFormatter.ViewModels
                 {
                     MessageBox.Show(ex.ToString(), "Log parse error");
                 }
-                LogTable.CurrentLog = CurrentLog;
                 Config.ExampleSource = CurrentLog;
                 Config.ImportLog(CurrentLog);
             });
 
             ShowTableCommand = new RelayCommand(() =>
             {
-                Window w = new LogViewerWindow();
-                w.Show();
+                LogTableViewModel lvVM = new LogTableViewModel
+                {
+                    //Config = Config,
+                    LogLines = CurrentLog.Entries
+                };
+                Window lvWindow = new LogViewerWindow
+                {
+                    DataContext = lvVM
+                };
+                lvWindow.Show();
             });
         }
     }

@@ -42,14 +42,18 @@ namespace EsoLogFormatter.ViewModels
         }
 
         public Log ExampleSource { get; set; }
-        [DependsOn("ExampleSource", "Config")]
-        public IEnumerable<object> Examples => ExampleSource.Entries.Where(e => e.Channel == Index).Take(5).Select(l => new
+        [DependsOn("ExampleSource", "Index")]
+        public IEnumerable<LogEntry> Examples => ExampleSource.Entries.Where(e => e.Channel == Index).Take(5);
+
+        [DependsOn("Examples", "Config")]
+        public LogTableViewModel ExampleLogTable => new LogTableViewModel
         {
-            l.TimeStamp,
-            Channel = Alias,
-            l.Author,
-            l.Text
-        });
+            Config = new Config
+            {
+                Channels = new List<ChannelConfig> { Config }
+            },
+            LogLines = Examples
+        };
 
         private ChannelConfigViewModel() { }
 

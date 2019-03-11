@@ -9,9 +9,6 @@
         mc:Ignorable="d"
         Title="Log Viewer" Height="900" Width="1600"
         WindowStartupLocation="CenterOwner">
-    <Window.DataContext>
-        <ViewModels:HomeViewModel />
-    </Window.DataContext>
 
-    <Views:HomeView />
+    <Views:LogTableView />
 </Window>

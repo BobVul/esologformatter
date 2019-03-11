@@ -9,13 +9,10 @@ namespace EsoLogFormatter.ViewModels
     [AddINotifyPropertyChangedInterface]
     class LogTableViewModel
     {
-        public Log CurrentLog { get; set; }
+        public IEnumerable<LogEntry> LogLines { get; set; }
 
         public Config Config { get; set; }
 
-        public LogTableViewModel()
-        {
-            CurrentLog = new Log();
-        }
+        public LogTableViewModel() { }
     }
 }
