@@ -70,7 +70,8 @@ namespace EsoLogFormatter.ViewModels
             return new ChannelConfigViewModel
             {
                 Config = new ChannelConfig(),
-                Index = index
+                Index = index,
+                Alias = Helpers.AppConfig.Config.DefaultChannels.GetValueOrDefault(index, "")
             };
         }
     }
