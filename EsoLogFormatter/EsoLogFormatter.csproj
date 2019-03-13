@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
+    <PackageReference Include="SharpYaml" Version="1.6.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,12 @@
     <Compile Update="Views\LogTableView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="app.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
