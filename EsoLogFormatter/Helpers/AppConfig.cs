@@ -1,8 +1,8 @@
-﻿using SharpYaml.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using YamlDotNet.Serialization;
 
 namespace EsoLogFormatter.Helpers
 {
@@ -18,7 +18,8 @@ namespace EsoLogFormatter.Helpers
         private static Lazy<AppConfig> config = new Lazy<AppConfig>(() =>
         {
             using var reader = new StreamReader("app.yaml");
-            var deserialiser = new Serializer();
+            var deserialiser = new DeserializerBuilder()
+                .Build();
             return deserialiser.Deserialize<AppConfig>(reader);
         });
     }

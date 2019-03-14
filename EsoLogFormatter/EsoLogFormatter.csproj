@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
-    <PackageReference Include="SharpYaml" Version="1.6.5" />
+    <PackageReference Include="YamlDotNet" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>
