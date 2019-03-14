@@ -26,11 +26,20 @@
                         </Setter>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Resources>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Channel Enabled" Binding="{Binding Enabled}" />
                     <DataGridTextColumn Header="Channel Index" Binding="{Binding Index}" />
                     <DataGridTextColumn Header="Channel Alias" Binding="{Binding Alias}" />
-                    <DataGridTextColumn Header="Channel Type" Binding="{Binding Type}" />
+                    <DataGridComboBoxColumn Header="Channel Type" SelectedItemBinding="{Binding Type}" ItemsSource="{Binding Source={x:Static helpers:AppConfig.Config}, Path=TypeTemplates.Keys}" />
                     <DataGridTemplateColumn Header="Example" CellTemplate="{StaticResource ExampleTemplate}" />
                 </DataGrid.Columns>
             </DataGrid>
