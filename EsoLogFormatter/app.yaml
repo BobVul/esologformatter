@@ -1,11 +1,21 @@
 ﻿DefaultChannels:
-  0: "Say"
-  1: "Yell"
-  2: "Whisper"
+  0:
+    Alias: "Say"
+    Type: Say
+  1:
+    Alias: "Yell"
+    Type: "Yell"
+  2:
+    Alias: "Whisper"
+    Type: "Whisper"
   3: "Group"
-  4: "Outgoing Whisper"
+  4:
+    Alias: "Outgoing Whisper"
+    Type: "OutgoingWhisper"
   5: "Unused 1"
-  6: "Emote"
+  6:
+    Alias: "Emote"
+    Type: "Emote"
   7: "NPC Say"
   8: "NPC Yell"
   9: "NPC Whisper"

@@ -11,7 +11,27 @@ namespace EsoLogFormatter.Helpers
         public ChannelMapping DefaultChannels { get; set; }
         public TemplateMapping TypeTemplates { get; set; }
 
-        public class ChannelMapping : Dictionary<int, string> { }
+        public class ChannelMapping : Dictionary<int, ChannelDetails> { }
+        public class ChannelDetails
+        {
+            public string Alias { get; set; } = "";
+            public string Type { get; set; } = "Default";
+
+            // support casting from String, to support a "simple" deserialisation of a yaml scalar value
+            // i.e.
+            // ChannelDetails: "foo"
+            // is equivalent to
+            // ChannelDetails:
+            //   Alias: "foo"
+            //   Type: "Default"
+            public static explicit operator ChannelDetails(String s)
+            {
+                return new ChannelDetails
+                {
+                    Alias = s
+                };
+            }
+        }
         public class TemplateMapping : Dictionary<string, string> { }
 
         public static AppConfig Config => config.Value;

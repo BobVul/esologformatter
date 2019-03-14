@@ -67,11 +67,13 @@ namespace EsoLogFormatter.ViewModels
 
         public static ChannelConfigViewModel FromIndex(int index)
         {
+            var configDefault = Helpers.AppConfig.Config.DefaultChannels.GetValueOrDefault(index, new Helpers.AppConfig.ChannelDetails());
             return new ChannelConfigViewModel
             {
                 Config = new ChannelConfig(),
                 Index = index,
-                Alias = Helpers.AppConfig.Config.DefaultChannels.GetValueOrDefault(index, "")
+                Alias = configDefault.Alias,
+                Type = configDefault.Type
             };
         }
     }
