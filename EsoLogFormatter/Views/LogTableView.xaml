@@ -4,15 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EsoLogFormatter.Views"
+             xmlns:helpers="clr-namespace:EsoLogFormatter.Helpers"
+             xmlns:conv="clr-namespace:EsoLogFormatter.BindingValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <DataGrid ItemsSource="{Binding LogLines}">
-            <!--
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Text"  Binding="{Binding Text}"/>
-            </DataGrid.Columns>
-            -->
-        </DataGrid>
-    </Grid>
+
+    <UserControl.Resources>
+        <helpers:BindingProxy x:Key="userControlProxy" Data="{Binding}"/>
+        <conv:IndexAliasConverter x:Key="indexAliasConverter" Config="{Binding Data.Config, Source={StaticResource userControlProxy}}" />
+    </UserControl.Resources>
+    <DataGrid ItemsSource="{Binding LogLines}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="TimeStamp"  Binding="{Binding TimeStamp}"/>
+            <DataGridTextColumn Header="Channel"  Binding="{Binding Channel, Converter={StaticResource indexAliasConverter}}"/>
+            <DataGridTextColumn Header="Author"  Binding="{Binding Author}"/>
+            <DataGridTextColumn Header="Text"  Binding="{Binding Text}"/>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>

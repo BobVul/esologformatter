@@ -44,5 +44,13 @@ namespace EsoLogFormatter.ViewModels
                 }
             }
         }
+
+        public Config GetConfig()
+        {
+            return new Config
+            {
+                Channels = Channels.Select(c => c.Config).ToList()
+            };
+        }
     }
 }

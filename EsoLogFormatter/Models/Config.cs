@@ -6,6 +6,6 @@ namespace EsoLogFormatter.Models
 {
     class Config
     {
-        public List<ChannelConfig> Channels { get; set; }
+        public ICollection<ChannelConfig> Channels { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace EsoLogFormatter.ViewModels
             {
                 LogTableViewModel lvVM = new LogTableViewModel
                 {
-                    //Config = Config,
+                    Config = Config.GetConfig(),
                     LogLines = CurrentLog.Entries
                 };
                 Window lvWindow = new LogViewerWindow
